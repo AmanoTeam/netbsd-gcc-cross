@@ -6,8 +6,8 @@ declare -r revision="$(git rev-parse --short HEAD)"
 
 declare -r workdir="${PWD}"
 
-declare -r toolchain_directory='/tmp/dakini'
-declare -r share_directory="${toolchain_directory}/usr/local/share/dakini"
+declare -r toolchain_directory='/tmp/netbsd-gcc-cross'
+declare -r share_directory="${toolchain_directory}/usr/local/share/netbsd-gcc-cross"
 
 declare -r environment="LD_LIBRARY_PATH=${toolchain_directory}/lib PATH=${PATH}:${toolchain_directory}/bin"
 
