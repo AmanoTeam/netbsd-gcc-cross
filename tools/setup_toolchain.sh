@@ -2,7 +2,7 @@
 
 set -eu
 
-declare -r DAKINI_HOME='/tmp/dakini-toolchain'
+declare -r DAKINI_HOME='/tmp/netbsd-gcc-cross-toolchain'
 
 if [ -d "${DAKINI_HOME}" ]; then
 	PATH+=":${DAKINI_HOME}/bin"
@@ -20,7 +20,7 @@ tar --directory="$(dirname "${DAKINI_CROSS_TARBALL}")" --extract --file="${DAKIN
 
 rm "${DAKINI_CROSS_TARBALL}"
 
-mv '/tmp/dakini' "${DAKINI_HOME}"
+mv '/tmp/netbsd-gcc-cross' "${DAKINI_HOME}"
 
 PATH+=":${DAKINI_HOME}/bin"
 
