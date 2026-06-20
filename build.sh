@@ -233,7 +233,7 @@ fi
 
 if ! [ -f "${zlib_tarball}" ]; then
 	curl \
-		--url 'https://github.com/madler/zlib/archive/refs/heads/develop.tar.gz' \
+		--url 'https://github.com/madler/zlib/archive/develop.tar.gz' \
 		--retry '30' \
 		--retry-all-errors \
 		--retry-delay '0' \
@@ -252,7 +252,7 @@ fi
 
 if ! [ -f "${zstd_tarball}" ]; then
 	curl \
-		--url 'https://github.com/facebook/zstd/archive/refs/heads/dev.tar.gz' \
+		--url 'https://github.com/facebook/zstd/archive/dev.tar.gz' \
 		--retry '30' \
 		--retry-all-errors \
 		--retry-delay '0' \
@@ -269,7 +269,7 @@ fi
 
 if ! [ -f "${gcc_tarball}" ]; then
 	curl \
-		--url "https://github.com/gcc-mirror/gcc/archive/refs/heads/releases/gcc-${gcc_major}.tar.gz" \
+		--url "https://github.com/gcc-mirror/gcc/archive/releases/gcc-${gcc_major}.tar.gz" \
 		--retry '30' \
 		--retry-all-errors \
 		--retry-delay '0' \
@@ -591,7 +591,7 @@ for triplet in "${triplets[@]}"; do
 		--enable-host-pie \
 		--enable-host-shared \
 		--enable-libgomp \
-		--enable-tls \
+		--enable-libstdcxx-verbose \
 		--with-specs='%{!Qy: -Qn}' \
 		--with-pic \
 		--with-gnu-as \
@@ -604,11 +604,10 @@ for triplet in "${triplets[@]}"; do
 		--disable-fixincludes \
 		--disable-libstdcxx-pch \
 		--disable-werror \
-		--disable-bootstrap \
 		--disable-multilib \
 		--disable-canonical-system-headers \
-		--disable-libstdcxx-verbose \
 		--disable-nls \
+		--disable-tls \
 		--without-static-standard-libraries \
 		${extra_configure_flags} \
 		CFLAGS="${ccflags}" \
@@ -707,22 +706,6 @@ if ! (( is_native )) && [[ "${CROSS_COMPILE_TRIPLET}" != *'-darwin'* ]]; then
 	declare soname=$("${readelf}" -d "${name}" | grep 'SONAME' | sed --regexp-extended 's/.+\[(.+)\]/\1/g')
 	
 	cp "${name}" "${toolchain_directory}/lib/${soname}"
-	
-	# libiconv
-	declare name=$(realpath $("${cc}" --print-file-name='libiconv.so'))
-	
-	if [ -f "${name}" ]; then
-		declare soname=$("${readelf}" -d "${name}" | grep 'SONAME' | sed --regexp-extended 's/.+\[(.+)\]/\1/g')
-		cp "${name}" "${toolchain_directory}/lib/${soname}"
-	fi
-	
-	# libcharset
-	declare name=$(realpath $("${cc}" --print-file-name='libcharset.so'))
-	
-	if [ -f "${name}" ]; then
-		declare soname=$("${readelf}" -d "${name}" | grep 'SONAME' | sed --regexp-extended 's/.+\[(.+)\]/\1/g')
-		cp "${name}" "${toolchain_directory}/lib/${soname}"
-	fi
 fi
 
 mkdir --parent "${share_directory}"

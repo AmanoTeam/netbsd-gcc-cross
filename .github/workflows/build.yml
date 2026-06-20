@@ -110,10 +110,6 @@ jobs:
           # DragonFly BSD
           'x86_64-unknown-dragonfly',
           
-          # Haiku
-          'i586-unknown-haiku',
-          'x86_64-unknown-haiku',
-          
           # Android
           'x86_64-unknown-linux-android',
           'i686-unknown-linux-android21',
@@ -144,17 +140,17 @@ jobs:
         if [[ '${{ matrix.target }}' = *'-linux-musl'* ]]; then
             declare -r RAIDEN_TAG='gcc-15'
             declare -r RAIDEN_TARBALL='/tmp/toolchain.tar.xz'
-            declare -r RAIDEN_URL="https://github.com/AmanoTeam/Raiden/releases/download/${RAIDEN_TAG}/x86_64-unknown-linux-gnu.tar.xz"
+            declare -r RAIDEN_URL="https://github.com/AmanoTeam/musl-gcc-cross/releases/download/${RAIDEN_TAG}/x86_64-unknown-linux-gnu.tar.xz"
             
             curl --connect-timeout '10' --retry '15' --retry-all-errors --fail --silent --location --url "${RAIDEN_URL}" --output "${RAIDEN_TARBALL}"
             tar --directory="$(dirname "${RAIDEN_TARBALL}")" --extract --file="${RAIDEN_TARBALL}"
             
-            export RAIDEN_HOME='/tmp/raiden'
+            export RAIDEN_HOME='/tmp/musl-gcc-cross'
             export PATH="${RAIDEN_HOME}/bin:${PATH}"
             
             source "${RAIDEN_HOME}/build/autotools/${{ matrix.target }}.sh"
         elif [[ '${{ matrix.target }}' = *'-linux-gnu'* ]]; then
-            declare -r OBGGCC_TAG='gcc-15'
+            declare -r OBGGCC_TAG='gcc-16'
             declare -r OBGGCC_TARBALL='/tmp/toolchain.tar.xz'
             declare -r OBGGCC_URL="https://github.com/AmanoTeam/obggcc/releases/download/${OBGGCC_TAG}/x86_64-unknown-linux-gnu.tar.xz"
             
@@ -192,7 +188,7 @@ jobs:
             
             source "${DAKINI_HOME}/build/autotools/${{ matrix.target }}.sh"
         elif [[ '${{ matrix.target }}' = *'-dragonfly' ]]; then
-            declare -r VENTI_TAG='gcc-15'
+            declare -r VENTI_TAG='gcc-16'
             declare -r VENTI_TARBALL='/tmp/toolchain.tar.xz'
             declare -r VENTI_URL="https://github.com/AmanoTeam/dragonfly-gcc-cross/releases/download/${VENTI_TAG}/x86_64-unknown-linux-gnu.tar.xz"
             
@@ -220,7 +216,7 @@ jobs:
                 --silent \
                 --show-error \
                 --fail \
-                --url 'https://raw.githubusercontent.com/AmanoTeam/OSXCross-Builds/refs/heads/master/main.sh' \
+                --url 'https://raw.githubusercontent.com/AmanoTeam/darwin-clang-cross/refs/heads/master/main.sh' \
                     | bash -s -- install
             
             export DARWIN_HOME='/tmp/darwin-clang-cross'

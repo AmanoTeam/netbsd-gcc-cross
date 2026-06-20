@@ -151,7 +151,4 @@
 #undef _GLIBCXX_HAVE_FINITEL
 #define _GLIBCXX_HAVE_FINITEL 1
 
-#undef _GLIBCXX_HAVE_TLS
-#define _GLIBCXX_HAVE_TLS 1
-
 #endif
